@@ -1,18 +1,20 @@
 package com.metropolis.ui.controller;
 
+
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @author Pop
  * @date 2020/1/30 14:54
  */
-@RestController
+@Controller
 public class HelloController {
 
-    @GetMapping(value = "hello")
-    public String hello(){
-        return "hello123";
+    @GetMapping("index")
+    public ModelAndView hello(){
+        return new ModelAndView("index");
     }
 
 }
