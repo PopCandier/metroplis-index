@@ -57,7 +57,9 @@ public class SysUser implements Serializable {
     //是否删除    
         @TableField("is_delete")    
     private Boolean isDelete;
-    
 
+
+    private String credentialsSalt;
+    public String getCredentialsSalt(){return username+salt;}
 
 }

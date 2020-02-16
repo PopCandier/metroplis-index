@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace=".dao.SysUserDao">
+<mapper namespace="com.metropolis.authorization.dal.persistence.SysUserMapper">
 
-    <resultMap type=".entity.SysUser" id="SysUserMap">
-        <result property="id" column="id" jdbcType="LONG INTEGER"/>
+    <resultMap type="com.metropolis.authorization.dal.entitys.SysUser" id="SysUserMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
         <result property="username" column="username" jdbcType="VARCHAR"/>
         <result property="password" column="password" jdbcType="VARCHAR"/>
         <result property="salt" column="salt" jdbcType="VARCHAR"/>
@@ -12,6 +12,17 @@
         <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP"/>
         <result property="isDelete" column="is_delete" jdbcType="BOOLEAN"/>
     </resultMap>
+
+    <select id="findUserByName" resultMap="SysUserMap">
+        select
+          id, username, password, salt, locked, createtime, last_login_time, is_delete
+        from sys_user
+        <where>
+            <if test="username!=null">
+                username=#{username}
+            </if>
+        </where>
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="SysUserMap">
@@ -63,8 +74,8 @@
     </select>
 
     <!--新增所有列-->
-    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into metropolis.sys_user(username, password, salt, locked, createtime, last_login_time, is_delete)
+    <insert id="saveUser" keyProperty="id" useGeneratedKeys="true" parameterType="sysUser">
+        insert into sys_user(username, password, salt, locked, createtime, last_login_time, is_delete)
         values (#{username}, #{password}, #{salt}, #{locked}, #{createtime}, #{lastLoginTime}, #{isDelete})
     </insert>
 

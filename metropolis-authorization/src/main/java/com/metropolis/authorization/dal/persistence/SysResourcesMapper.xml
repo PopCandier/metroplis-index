@@ -1,17 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace=".dao.SysResourcesDao">
+<mapper namespace="com.metropolis.authorization.dal.persistence.SysResourcesMapper">
 
-    <resultMap type=".entity.SysResources" id="SysResourcesMap">
-        <result property="id" column="id" jdbcType="LONG INTEGER"/>
+    <resultMap type="com.metropolis.authorization.dal.entitys.SysResources" id="SysResourcesMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
         <result property="type" column="type" jdbcType="VARCHAR"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="url" column="url" jdbcType="VARCHAR"/>
-        <result property="parentId" column="parent_id" jdbcType="LONG INTEGER"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
         <result property="parentIds" column="parent_ids" jdbcType="VARCHAR"/>
         <result property="permission" column="permission" jdbcType="VARCHAR"/>
         <result property="available" column="available" jdbcType="BOOLEAN"/>
     </resultMap>
+
+
+    <select id="findResourcesByUsername" resultMap="SysResourcesMap">
+        select resource.* from sys_resources resource
+        LEFT JOIN sys_role_resources rr ON rr.resources_id=resource.id
+        LEFT JOIN sys_user_role ur ON ur.role_id = rr.role_id
+        LEFT JOIN sys_user suser ON ur.user_id = suser.id
+        <where>
+            <if test="username!=null">
+                suser.username = #{username}
+            </if>
+        </where>
+    </select>
 
     <!--查询单个-->
     <select id="queryById" resultMap="SysResourcesMap">

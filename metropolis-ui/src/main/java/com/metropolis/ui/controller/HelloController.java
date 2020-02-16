@@ -13,8 +13,8 @@ import org.springframework.web.servlet.ModelAndView;
 public class HelloController {
 
     @GetMapping("index")
-    public ModelAndView hello(){
-        return new ModelAndView("index");
+    public String hello(){
+        return "index";
     }
 
 }
